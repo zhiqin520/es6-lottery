@@ -7,11 +7,18 @@ class Calculate{
    */
   computeCount(active,play_name){
     let count=0;
+
+    //this.play_list 数据结构Map 有has方法
     const exist=this.play_list.has(play_name);
+
+    //es6 生成指定长度active的数组, 并填充初始值0; 而es5中需用for循环生成
     const arr=new Array(active).fill('0');
+
+    //at(0) 取第一位
     if(exist && play_name.at(0)==='r'){
       count=Calculate.combine(arr,play_name.split('')[1]).length;
     }
+
     return count;
   }
 
@@ -59,6 +66,8 @@ class Calculate{
         max=1;
       }
     }
+
+    //this.play_list 数据结构Map 有get方法
     return [min,max].map(item=>item*self.play_list.get(play_name).bonus)
   }
 
@@ -68,8 +77,12 @@ class Calculate{
    * @param  {number} size [组合运算的基数]
    * @return {number}      [计算注数]
    */
+
+  //static 静态方法, 可通过类名直接调用, Calculate.combine
   static combine(arr,size){
     let allResult=[];
+
+    //立即执行函数
     (function f(arr,size,result){
       let arrLen=arr.length;
       if(size>arrLen){
@@ -82,17 +95,17 @@ class Calculate{
           let newResult=[].concat(result);
           newResult.push(arr[i]);
           if(size===1){
-            allResult.push(newResult)
+            allResult.push(newResult);
           }else{
             let newArr=[].concat(arr);
             newArr.splice(0,i+1);
-            f(newArr,size-1,newResult)
+            f(newArr,size-1,newResult);
           }
         }
       }
+    })(arr,size,[]);
 
-    })(arr,size,[])
-    return allResult
+    return allResult;
   }
 
 }

@@ -1,5 +1,5 @@
 var express = require('express');
-var mockjs = require('mockjs');
+var mockjs = require('mockjs');//mock数据
 var router = express.Router();
 /* GET home page. */
 router.get('/', function (req, res, next) {

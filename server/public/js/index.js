@@ -61,7 +61,10 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	//lottery实例化
 	var syy = new _lottery2.default();
+
+	console.log(syy);
 
 /***/ }),
 /* 2 */
@@ -9242,8 +9245,12 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } } //Babel只转换语法(如箭头函数)
+	//可以使用 babel-polyfill支持新的全局变量，例如 Promise 、新的原生方法如 String.padStart (left-pad) 等
+	//使用时需要在你应用程序的入口点顶部或打包配置中引入
 
+
+	//深度拷贝
 	var copyProperties = function copyProperties(target, source) {
 	  var _iteratorNormalCompletion = true;
 	  var _didIteratorError = false;
@@ -9274,6 +9281,7 @@
 	  }
 	};
 
+	//多重继承
 	var mix = function mix() {
 	  var Mix = function Mix() {
 	    _classCallCheck(this, Mix);
@@ -9312,6 +9320,8 @@
 	  return Mix;
 	};
 
+	//Lottery 拥有 Base,Calculate,Interface,Timer四个类的功能
+
 	var Lottery = function (_mix) {
 	  _inherits(Lottery, _mix);
 
@@ -9335,6 +9345,7 @@
 	    _this.open_code_list = new Set();
 	    _this.play_list = new Map();
 	    _this.number = new Set();
+	    //将dom的id和class定义成变量,方便后面调用数据
 	    _this.issue_el = '#curr_issue';
 	    _this.countdown_el = '#countdown';
 	    _this.state_el = '.state_el';
@@ -9358,6 +9369,7 @@
 	    key: 'updateState',
 	    value: function updateState() {
 	      var self = this;
+	      //获取当前期号
 	      this.getState().then(function (res) {
 	        self.issue = res.issue;
 	        self.end_time = res.end_time;
@@ -9368,7 +9380,9 @@
 	        }, function () {
 	          setTimeout(function () {
 	            self.updateState();
+	            //更新遗漏数据
 	            self.getOmit(self.issue).then(function (res) {});
+	            //更新开奖号码
 	            self.getOpenCode(self.issue).then(function (res) {});
 	          }, 500);
 	        });
@@ -9432,6 +9446,7 @@
 	     * @return {[type]} [description]
 	     */
 	    value: function initPlayList() {
+	      //play_list 数据结构Map, 类似于对象, 但"键"不限于字符串; 有set get has等方法
 	      this.play_list.set('r2', {
 	        bonus: 6,
 	        tip: '从01～11中任选2个或多个号码，所选号码与开奖号码任意两个号码相同，即中奖<em class="red">6</em>元',
@@ -9471,6 +9486,8 @@
 	    key: 'initNumber',
 	    value: function initNumber() {
 	      for (var i = 1; i < 12; i++) {
+	        //number 数据结构Set, 类似于数组, 但成员值唯一; 有add delete has等方法
+	        //padStart 补白
 	        this.number.add(('' + i).padStart(2, '0'));
 	      }
 	    }
@@ -9484,7 +9501,10 @@
 	    key: 'setOmit',
 	    value: function setOmit(omit) {
 	      var self = this;
+	      //omit 数据结构Map
+	      //map/set的清空方法clear
 	      self.omit.clear();
+	      //遍历 keys values entries
 	      var _iteratorNormalCompletion = true;
 	      var _didIteratorError = false;
 	      var _iteratorError = undefined;
@@ -9526,6 +9546,7 @@
 	    key: 'setOpenCode',
 	    value: function setOpenCode(code) {
 	      var self = this;
+	      //open_code 数据结构Set
 	      self.open_code.clear();
 	      var _iteratorNormalCompletion2 = true;
 	      var _didIteratorError2 = false;
@@ -9580,6 +9601,8 @@
 	    key: 'changePlayNav',
 	    value: function changePlayNav(e) {
 	      var self = this;
+
+	      //事件绑定在父元素上, 点击的是子元素, currentTarget返回的是子元素
 	      var $cur = (0, _jquery2.default)(e.currentTarget);
 	      $cur.addClass('active').siblings().removeClass('active');
 	      self.cur_play = $cur.attr('desc').toLocaleLowerCase();
@@ -9692,6 +9715,7 @@
 	      var tpl = void 0;
 	      var c1 = win1 < 0 && win2 < 0 ? Math.abs(win1) : win1;
 	      var c2 = win1 < 0 && win2 < 0 ? Math.abs(win2) : win2;
+	      //字符串模板
 	      if (count === 0) {
 	        tpl = '\u60A8\u9009\u4E86 <b class="red">' + count + '</b> \u6CE8\uFF0C\u5171 <b class="red">' + count * 2 + '</b> \u5143';
 	      } else if (range[0] === range[1]) {
@@ -9729,6 +9753,7 @@
 	    value: function getRandom(num) {
 	      var arr = [],
 	          index = void 0;
+	      //Array.from 集合转成真正的数组
 	      var number = Array.from(this.number);
 	      while (num--) {
 	        index = Number.parseInt(Math.random() * number.length);
@@ -19622,6 +19647,8 @@
 	  _createClass(Timer, [{
 	    key: 'countdown',
 	    value: function countdown(end, update, handle) {
+	      //let 变量,有块级作用域
+	      //const 常量,有块级作用域,不可修改，定义时必须赋值,但const定义的对象是可以修改的，因为定义对象返回的是引用
 	      var now = new Date().getTime();
 	      var self = this;
 	      if (now - end > 0) {
@@ -19693,11 +19720,18 @@
 	     */
 	    value: function computeCount(active, play_name) {
 	      var count = 0;
+
+	      //this.play_list 数据结构Map 有has方法
 	      var exist = this.play_list.has(play_name);
+
+	      //es6 生成指定长度active的数组, 并填充初始值0; 而es5中需用for循环生成
 	      var arr = new Array(active).fill('0');
+
+	      //at(0) 取第一位
 	      if (exist && play_name.at(0) === 'r') {
 	        count = Calculate.combine(arr, play_name.split('')[1]).length;
 	      }
+
 	      return count;
 	    }
 
@@ -19749,6 +19783,8 @@
 	          max = 1;
 	        }
 	      }
+
+	      //this.play_list 数据结构Map 有get方法
 	      return [min, max].map(function (item) {
 	        return item * self.play_list.get(play_name).bonus;
 	      });
@@ -19761,10 +19797,14 @@
 	     * @return {number}      [计算注数]
 	     */
 
+	    //static 静态方法, 可通过类名直接调用, Calculate.combine
+
 	  }], [{
 	    key: 'combine',
 	    value: function combine(arr, size) {
 	      var allResult = [];
+
+	      //立即执行函数
 	      (function f(arr, size, result) {
 	        var arrLen = arr.length;
 	        if (size > arrLen) {
@@ -19786,6 +19826,7 @@
 	          }
 	        }
 	      })(arr, size, []);
+
 	      return allResult;
 	    }
 	  }]);
@@ -19857,7 +19898,7 @@
 	    key: 'getOpenCode',
 	    value: function getOpenCode(issue) {
 	      var self = this;
-	      return new Promise(function (resolve, rejet) {
+	      return new Promise(function (resolve, reject) {
 	        _jquery2.default.ajax({
 	          url: '/get/opencode',
 	          data: {
@@ -19885,7 +19926,7 @@
 	    key: 'getState',
 	    value: function getState(issue) {
 	      var self = this;
-	      return new Promise(function (resolve, rejet) {
+	      return new Promise(function (resolve, reject) {
 	        _jquery2.default.ajax({
 	          url: '/get/state',
 	          data: {

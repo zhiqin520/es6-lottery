@@ -1,5 +1,7 @@
 class Timer{
   countdown(end,update,handle){
+    //let 变量,有块级作用域
+    //const 常量,有块级作用域,不可修改，定义时必须赋值,但const定义的对象是可以修改的，因为定义对象返回的是引用
     const now=new Date().getTime();
     const self=this;
     if(now-end>0){

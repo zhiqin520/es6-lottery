@@ -5,6 +5,7 @@ class Base{
    * @return {[type]} [description]
    */
   initPlayList(){
+    //play_list 数据结构Map, 类似于对象, 但"键"不限于字符串; 有set get has等方法
     this.play_list.set('r2',{
       bonus:6,
       tip:'从01～11中任选2个或多个号码，所选号码与开奖号码任意两个号码相同，即中奖<em class="red">6</em>元',
@@ -47,6 +48,8 @@ class Base{
    */
   initNumber(){
     for(let i=1;i<12;i++){
+      //number 数据结构Set, 类似于数组, 但成员值唯一; 有add delete has等方法
+      //padStart 补白
       this.number.add((''+i).padStart(2,'0'))
     }
   }
@@ -57,7 +60,10 @@ class Base{
    */
   setOmit(omit){
     let self=this;
+    //omit 数据结构Map
+    //map/set的清空方法clear
     self.omit.clear();
+    //遍历 keys values entries
     for(let [index,item] of omit.entries()){
       self.omit.set(index,item)
     }
@@ -72,6 +78,7 @@ class Base{
    */
   setOpenCode(code){
     let self=this;
+    //open_code 数据结构Set
     self.open_code.clear();
     for(let item of code.values()){
       self.open_code.add(item);
@@ -98,6 +105,8 @@ class Base{
    */
   changePlayNav(e){
     let self=this;
+
+    //事件绑定在父元素上, 点击的是子元素, currentTarget返回的是子元素
     let $cur=$(e.currentTarget);
     $cur.addClass('active').siblings().removeClass('active');
     self.cur_play=$cur.attr('desc').toLocaleLowerCase();
@@ -205,6 +214,7 @@ class Base{
     let tpl;
     let c1=(win1<0&&win2<0)?Math.abs(win1):win1;
     let c2=(win1<0&&win2<0)?Math.abs(win2):win2;
+    //字符串模板
     if(count===0){
       tpl=`您选了 <b class="red">${count}</b> 注，共 <b class="red">${count*2}</b> 元`
     }else if(range[0]===range[1]){
@@ -244,13 +254,14 @@ class Base{
    */
   getRandom(num){
     let arr=[],index;
+    //Array.from 集合转成真正的数组
     let number=Array.from(this.number);
     while(num--){
       index=Number.parseInt(Math.random()*number.length);
       arr.push(number[index]);
       number.splice(index,1);
     }
-    return arr.join(' ')
+    return arr.join(' ');
   }
 
   /**
@@ -264,7 +275,7 @@ class Base{
     let play=this.cur_play.match(/\d+/g)[0];
     let self=this;
     if(num==='0'){
-      $(self.cart_el).html('')
+      $(self.cart_el).html('');
     }else{
       for(let i=0;i<num;i++){
         self.addCodeItem(self.getRandom(play),self.cur_play,self.play_list.get(self.cur_play).name,1);
