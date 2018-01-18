@@ -21,7 +21,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(require('connect-livereload')());
+app.use(require('connect-livereload')());//接收热更新, 一定要加, 不信你删掉试试
 app.use('/', routes);
 app.use('/users', users);
 
